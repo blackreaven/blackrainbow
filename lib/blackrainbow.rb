@@ -39,9 +39,12 @@ module Blackrainbow
 
           for i in generator.first..generator.last
             step = generator.step(i)
-            hash = Digest::MD5.hexdigest step
+            hash = Digest::SHA256.hexdigest step
+            print "#{step}\r"
+
             if hash == options.input
               puts step
+              return
             end
           end
         end
@@ -73,6 +76,17 @@ module Blackrainbow
           file.close
         end
       end
+
+      command :test do |c|
+        c.syntax = 'blackgen full'
+        c.description = 'Generate incremental word list'
+        c.action do |args, options|
+          for i in 1..9999999
+            print "#{i}\r"
+          end
+        end
+      end
+
       run!
     end
   end
